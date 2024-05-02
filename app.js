@@ -7,21 +7,21 @@ let intervalId2 = undefined;
 
 let dateFunction = () => {
   let today = new Date();
-  let inptDate = new Date(document.querySelector("#birthDate".value));
+  let dateEntered = new Date(document.querySelector("#dateId").value);
 
-  if (inptDate == "" || inptDate == "Enter Valid Date") {
+  if (dateEntered == "" || dateEntered == "Invalid Date") {
     alert("Enter a Date");
     return;
   }
 
-  if (inptDate > today) {
+  if (dateEntered > today) {
     alert("Enter Correct Dated");
     return;
   }
 
   if (
-    today.getMonth() == inptDate.getMonth() &&
-    today.getDate() == inptDate.getDate()
+    today.getMonth() == dateEntered.getMonth() &&
+    today.getDate() == dateEntered.getDate()
   ) {
     alert("Happy Birthday To You");
   }
@@ -33,51 +33,80 @@ let dateFunction = () => {
   }, 1000);
 
   if (intervalId2 !== undefined) clearInterval(intervalId2);
-  yeaOld();
+  yearOld();
   intervalId2 = setInterval(() => {
-    yeaOld();
+    yearOld();
   }, 1000);
 };
 
 let getTimeLeft = () => {
   let today = new Date();
 
-  const inptDate = new Date(
-    document.querySelector("#birthDate").value + "00:00:00"
+  const dateEntered = new Date(
+    document.querySelector("#dateId").value + "00:00:00"
   );
 
-  let birthdayDate = inptDate;
-  birthdayDate.setFullYear(today.getFullYear());
+  let birthdayDateThisYear = dateEntered;
+  birthdayDateThisYear.setFullYear(today.getFullYear());
 
-  if (today.getMonth() > inptDate.getMonth()) {
-    birthdayDate.setFullYear(birthdayDate.getFullYear() + 1);
+  if (today.getMonth() > dateEntered.getMonth()) {
+    birthdayDateThisYear.setFullYear(birthdayDateThisYear.getFullYear() + 1);
   }
 
-  let nextBirthdayDate = birthdayDate - today;
+  let nextBirthdayDiffInMili = birthdayDateThisYear - today;
 
-  let nextBirthdayInDays = Math.floor(nextBirthdayDate / miliSecondInDay);
-  let nextBirthdayInDaysReminder = nextBirthdayDate % miliSecondInDay;
+  let nextBirthdayInDays = Math.floor(nextBirthdayDiffInMili / miliSecondInDay);
+  let nextBirthdayInDaysReminder = nextBirthdayDiffInMili % miliSecondInDay;
 
-  let nextBirthdayInHour = Math.floor(
+  let nextBirthdayInHours = Math.floor(
     nextBirthdayInDaysReminder / (1000 * 60 * 60)
   );
-  let nextBirthdayInHourReminder =
+  let nextBirthdayInHoursReminder =
     nextBirthdayInDaysReminder % (1000 * 60 * 60);
 
   let nextBirthdayInMinutes = Math.floor(
-    nextBirthdayInHourReminder / (1000 * 60 * 60)
+    nextBirthdayInHoursReminder / (1000 * 60)
   );
-  let nextBirthdayInMinutesReminder =
-    nextBirthdayInHourReminder % (1000 * 60 * 60);
+  let nextBirthdayInMinutesReminder = nextBirthdayInHoursReminder % (1000 * 60);
 
   let nextBirthdayInSeconds = Math.floor(nextBirthdayInMinutesReminder / 1000);
 
   document.querySelector("#daysLeft").innerHTML =
     "Your Next Birthday is in " + "<br>";
-  document.querySelector("#days").innerHTML = nextBirthdayInDays + " D";
-  document.querySelector("#hour").innerHTML = nextBirthdayInHour + " H";
-  document.querySelector("#min").innerHTML = nextBirthdayInMinutes + " M";
-  document.querySelector("#sec").innerHTML = nextBirthdayInSeconds + " S";
+  document.querySelector("#day").innerHTML = nextBirthdayInDays + " D";
+  document.querySelector("#hour").innerHTML = nextBirthdayInHours + " H";
+  document.querySelector("#minute").innerHTML = nextBirthdayInMinutes + " M";
+  document.querySelector("#second").innerHTML = nextBirthdayInSeconds + " S";
 
-  birthdayDate.setSeconds(birthdayDate.getSeconds() - 1);
+  birthdayDateThisYear.setSeconds(birthdayDateThisYear.getSeconds() - 1);
+};
+
+let yearOld = () => {
+  let today = new Date();
+  const dateEntered = new Date(
+    document.querySelector("#dateId").value + " 00:00:00"
+  );
+
+  let diffInMili = today - dateEntered;
+
+  let ageInYear = Math.floor(diffInMili / miliSecInYear);
+  let reminderOfYearAge = diffInMili % miliSecInYear;
+
+  let ageInMonth = Math.floor(reminderOfYearAge / miliSecondInMonth);
+  let reminderOfMonthAge = reminderOfYearAge % miliSecondInMonth;
+
+  let ageInDay = Math.floor(reminderOfMonthAge / miliSecondInDay);
+  let ageInDayReminder = reminderOfMonthAge % miliSecondInDay;
+
+  let ageInHour = Math.floor(ageInDayReminder / (1000 * 60 * 60));
+  let ageInHourReminder = ageInDayReminder % (1000 * 60 * 60);
+
+  let ageInMinute = Math.floor(ageInHourReminder / (1000 * 60));
+  let ageInMinuteReminder = ageInHourReminder % (1000 * 60);
+
+  let ageInSecond = Math.floor(ageInMinuteReminder / 1000);
+
+  document.querySelector(
+    "#age"
+  ).innerHTML = `You are now ${ageInYear} years, ${ageInMonth} month, ${ageInDay} days, ${ageInHour} hour, ${ageInMinute} minutes and ${ageInSecond} seconds old`;
 };

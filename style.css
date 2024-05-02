@@ -63,3 +63,13 @@ form > button {
     display: flex;
     flex-direction: row;
 }
+
+.timer>div {
+	padding-left: 5px;
+	transform: translateZ(20px);
+}
+
+#daysLeft {
+	display: inline-block;
+
+}
